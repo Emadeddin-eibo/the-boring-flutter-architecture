@@ -1,7 +1,11 @@
+
 # The Boring Flutter Architecture - Coding Example
 
 This code is related to an article on Medium... [Link to article](https://emadeddin-eibo.medium.com/the-boring-flutter-architecture-coding-example-20fee9c3d9a6).
 
+#### You can check the video demo on the Medium article.
+
+###
 
 📝 Assignment
 Build a User Avatar feature that meets the following requirements:
