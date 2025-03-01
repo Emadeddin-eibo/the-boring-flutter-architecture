@@ -58,7 +58,6 @@ class UserInformationAvatarRepositoryImpl
 
   @override
   Future<void> updateUserAge({required String age}) async {
-    throw AgeChangeFailureException();
     try {
       final cachedUser = cacheDataSource.userInformationEntity;
 
