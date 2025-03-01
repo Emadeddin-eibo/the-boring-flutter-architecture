@@ -1,48 +1,67 @@
 import 'dart:math';
 
 import 'package:injectable/injectable.dart';
+import 'package:my_app/features/user_information/data/requests/user_information_request.dart';
+import 'package:my_app/features/user_information/data/responses/user_information_exception_response.dart';
+import 'package:my_app/features/user_information/data/responses/user_information_response.dart';
+import 'package:my_app/features/user_information/domain/exceptions/user_information_exceptions.dart';
 
 @Injectable()
 class UserInformationAvatarRemoteDataSource {
   UserInformationAvatarRemoteDataSource();
 
-  Future<String> getUserAvatar() async {
+  Future<UserInformationResponse> getUserInformation() async {
     try {
-      final imageResult = await _simulateGetImage();
+      final apiResponse = await _simulateUserFromApi();
 
-      return imageResult;
-    } catch (e) {
-      throw Exception(e);
+      if (apiResponse['success']) {
+        return UserInformationResponse.fromJson(apiResponse['data']);
+      } else {
+        throw UserInformationExceptionResponse.fromJson(apiResponse);
+      }
+    } catch (_) {
+      throw UserInformationUnknownException();
     }
   }
 
-  Future<String> updateUserAvatar({required String pathToFile}) async {
+  Future<UserInformationResponse> updateUserInformation({
+    required UserInformationRequest request,
+  }) async {
     try {
-      final uploadedImageUrl = await _simulateUpload(pathToFile);
+      final apiResponse = await _simulateUploadData(request);
 
-      return uploadedImageUrl;
+      if (apiResponse['success']) {
+        return UserInformationResponse.fromJson(apiResponse['data']);
+      } else {
+        throw UserInformationExceptionResponse.fromJson(apiResponse);
+      }
     } catch (e) {
-      throw Exception(e);
+      throw UserInformationUnknownException();
     }
   }
 
-  /// Simulating uploading the image to Backend with 50/50 chance og failure.
-  _simulateUpload(uploadedImageUrl) async {
+  _simulateUploadData(UserInformationRequest userData) async {
     await Future.delayed(const Duration(milliseconds: 2500));
 
-    if (Random().nextBool()) {
-      throw Exception("Upload failed");
-    } else {
-      return "$uploadedImageUrl";
-    }
+    return {
+      "success": true,
+      "message": "User retrieved successfully",
+      "data": userData.toJson(),
+    };
   }
 
-  /// Simulating getting the image from Backend.
-  /// By default, let's assume that User does not have an avatar...
-  /// If you want to test the case where User has already an image
-  /// Just return `https://picsum.photos/200` instead of the empty String
-  _simulateGetImage() async {
+  _simulateUserFromApi() async {
     await Future.delayed(const Duration(milliseconds: 1500));
-    return '';
+
+    return {
+      "success": true,
+      "message": "User retrieved successfully",
+      "data": {
+        "fullName": "John Doe",
+        "imageUrl": "https://picsum.photos/200",
+        "location": "Dubai, United Arab Emirates",
+        "age": "35"
+      }
+    };
   }
 }

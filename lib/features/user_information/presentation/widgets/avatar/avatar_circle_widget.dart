@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/features/user_information/presentation/widgets/avatar/fake_image_picker.dart';
 
 class AvatarCircleWidget extends StatelessWidget {
   final String avatarUrl;
-  final VoidCallback onImageChange;
+  final Function(String) onImageChange;
 
   const AvatarCircleWidget({
     super.key,
@@ -26,11 +27,28 @@ class AvatarCircleWidget extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: onImageChange,
+            onPressed: () => _showGalleryPicker(context),
             child: Text(_getText()),
           ),
         ],
       ),
+    );
+  }
+
+  void _showGalleryPicker(context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(16),
+        ),
+      ),
+      builder: (context) {
+        return FakeImageUploader(
+          onImageSelected: onImageChange,
+        );
+      },
     );
   }
 

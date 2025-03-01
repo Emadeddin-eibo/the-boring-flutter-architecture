@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/features/user_information/presentation/widgets/user_information_avatar.dart';
+import 'package:my_app/features/user_information/presentation/widgets/user_information_widget.dart';
 
 class UserInformationScreen extends StatefulWidget {
   const UserInformationScreen({super.key});
@@ -11,13 +11,17 @@ class UserInformationScreen extends StatefulWidget {
 class _UserInformationScreenState extends State<UserInformationScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Some other Widgets by other devs
-        UserInformationAvatar(),
-        // Some other Widgets by other devs
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Your Profile'),
+        backgroundColor: Colors.cyan,
+      ),
+      body: const Column(
+        children: [
+          SizedBox(height: 42),
+          UserInformationWidget(),
+        ],
+      ),
     );
   }
 }
